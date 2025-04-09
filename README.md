@@ -59,3 +59,12 @@ brew install yubico-yubikey-manager ykman
 ```
 
 Note, there is also the `yubico-authenticator` package that you can install using brew, however our IT department makes this available through other means.
+
+### Import Existing Keys
+As I already have PGP keys on my various Yubikeys, I want to import references to them into my installed GPG Keychain. Simply plug each one in turn and run the following for each:
+
+```bash
+gpg --card-edit
+# Key info is displayed
+gpg/card> quit
+```
