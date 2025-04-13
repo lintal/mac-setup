@@ -39,16 +39,6 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
 nvm install --lts
 ```
 
-### Git
-
-```bash
-# To instasll:
-brew install git
-
-# Setup some alias commands:
-git config --global alias.tree "log --graph --decorate --pretty=oneline --abbrev-commit"
-```
-
 ## Security Key (Yubikey)
 I use my security keys (yes -  you should have more than one!) in my workflows extensively. These include basic OTP MFA, as well as more complex usecases including PGP signing GIT commits, SSH login using GPG keys etc. There are also some tools available from Yubico to install to help out with some tasks related to the keys.
 
@@ -150,3 +140,28 @@ Source docs:
 - https://developers.yubico.com/PIV/Guides/Securing_SSH_with_OpenPGP_or_PIV.html
 - https://florin.myip.org/blog/easy-multifactor-authentication-ssh-using-yubikey-neo-tokens
 - https://gist.github.com/ixdy/6fdd1ecea5d17479a6b4dab4fe1c17eb
+
+## Git
+
+I use my PGP key on my Yubikey to sign all my git commits, and I want this configured by default. To do this:
+
+Some basic setup to start:
+
+```bash
+# To install:
+brew install git
+
+git config --global user.email "{YOUR_EMAIL_ADDRESS}"
+git config --global user.name "{YOUR_NAME}"
+
+# Setup some alias commands:
+git config --global alias.tree "log --graph --decorate --pretty=oneline --abbrev-commit"
+```
+
+We may also want to add Github's SSH key for verifying commits made through the web console. You can get the certificate from here: https://github.com/web-flow.gpg, then add this to your GPG-Keychain.
+
+```bash
+git config --global commit.gpgsign true
+git config --global tag.gpgSign true
+git config --global user.signingkey {PGP_SIGN_KEY_LAST_4_OCTETS}
+```
