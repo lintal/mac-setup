@@ -103,6 +103,8 @@ sc_auth pair -h {HASH} -u {MAC_USERNAME}
 sc_auth list
 ```
 
+If you keep getting prompted for your Mac password as well from the login screen, just open Keychain Access and unlock it from there. Next time you lock your Mac, you should only get prompted for your Yubikey PIV PIN.
+
 ## SSH
 ```
 Host *,??-*-?
