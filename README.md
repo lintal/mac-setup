@@ -39,6 +39,19 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
 nvm install --lts
 ```
 
+### OhMyZsh
+I use this for doing some config of my shell environment. See the [docs](https://github.com/ohmyzsh/ohmyzsh). To install:
+
+```bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+```
+
+My list of plugins used:
+```
+# ~/.zshrc
+plugins=(git npm node sudo)
+```
+
 ## Security Key (Yubikey)
 I use my security keys (yes -  you should have more than one!) in my workflows extensively. These include basic OTP MFA, as well as more complex usecases including PGP signing GIT commits, SSH login using GPG keys etc. There are also some tools available from Yubico to install to help out with some tasks related to the keys.
 
