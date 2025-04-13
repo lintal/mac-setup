@@ -190,3 +190,64 @@ We can then activate one of the keys as follows (in this case, using my work iss
 ```bash
 git-sign-bbc
 ```
+
+## AWS CLI
+
+Install the AWS CLI as per the published instructions [here](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html).
+
+### GoBBC
+Tool used to authenticate AWS access to BBC accounts - see [here](https://github.com/bbc/gobbc).
+
+Note, the version of XCode Command-Line-Tools needs to be sufficiently modern. To check, you can run the following:
+
+```bash
+brew doctor
+```
+
+This may give you instruction to upgrade this, either using the Mac `System Settings` app, or manual removal & re-installation commands.
+
+**Certificates**
+
+I store my DevCert outside the normal area where GoBBC (and other Sandbox structured projects) look for certificates for mTLS. Therefore I link them in to the appropriate places as follows:
+
+```bash
+sudo mkdir -p /etc/pki/tls/certs
+sudo mkdir -p /etc/pki/tls/private
+
+sudo ln -s ~/Certificates/devcerts/2024/lintoa01.crt /etc/pki/tls/certs/client.crt
+sudo ln -s ~/Certificates/devcerts/2024/lintoa01-unsafe.key /etc/pki/tls/private/client.key
+sudo chmod 600 /etc/pki/tls/private/client.key
+
+gobbc doctor
+# Should hopefully give you a clean result.
+```
+
+**Account Aliases**
+
+You can setup a number of account aliases for ease of reference using:
+
+```bash
+gobbc set-aws-account-alias -accountId <ACCOUNT_ID> -alias <ALIAS>
+```
+
+You can get the list of configured aliases using:
+```bash
+gobbc list-aws-account-aliases
+```
+
+**Command Shortcuts**
+I like having a few shortcut commands to ease working with GoBBC. These are:
+
+
+| Command | Equivalent | Description |
+|-|-| - |
+| `gbc` | `gobbc aws-console -a` | Open AWS console in the browser for a particular account. |
+|`gbt`| `gobbc aws-credentials -a` | GoBBC terminal - for use with CLI commands. |
+
+
+To configure:
+```
+# Add to ~/.zprofile
+alias gbc="gobbc aws-console -a"
+alias gbt="gobbc aws-credentials -a"
+```
