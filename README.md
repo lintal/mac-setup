@@ -68,3 +68,53 @@ gpg --card-edit
 # Key info is displayed
 gpg/card> quit
 ```
+
+## PKCS#11 Certificate
+I also have my DevCert installed on my Yubikey. To enable access to this from your browser, you need to do the following:
+
+Source Docs:
+https://github.com/OpenSC/OpenSC/wiki/macOS-Quick-Start
+
+```bash
+# This works best with Firefox, so let's install that:
+brew install firefox
+
+# To install PKCS#11 capability:
+brew install opensc --cask
+
+# Test it's working (may require reload of the shell environment):
+pkcs11-tool --login --test
+```
+
+Then following the following docs to get this working with Firefox: https://github.com/OpenSC/Wiki/blob/master/Installing-OpenSC-PKCS11-Module-in-Firefox%2C-Step-by-Step.md
+
+### Passwordless Mac Login
+With PKCS#11, you can also enable smartcard login for your Mac. Note, this isn't actually dependent on OpenSC installed above, but instead uses the mac built-in `sc_auth` command.
+
+Source docs: https://developers.yubico.com/PIV/Guides/Smart_card-only_authentication_on_macOS.html
+
+```bash
+sc_auth identities
+# From the output of the above command, grab the hash of the certificate stored on your card
+
+sc_auth pair -h {HASH} -u {MAC_USERNAME}
+
+# Check it's now paired with:
+sc_auth list
+```
+
+## SSH
+```
+Host *,??-*-?
+  User YOUR_COSMOS_USERNAME
+  IdentityFile ~/.ssh/id_rsa
+  ProxyCommand >&1; h="%h"; r=${h##*,}; i=${h%%,*}; v=$(($(cut -d. -f2 <<<$i) / 32)); exec ssh -q -p 22000 bastion-tunnel@$v.access.$r.cloud.bbc.co.uk nc $i %p
+  StrictHostKeyChecking no
+  UserKnownHostsFile /dev/null
+ 
+Host github.com
+ HostName github.com
+  User YOUR_GITHUB_USERNAME
+  IdentityFile ~/.ssh/id_rsa
+  ProxyCommand nc -x socks-gw.reith.bbc.co.uk:1085 %h %p
+```
