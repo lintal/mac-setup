@@ -86,7 +86,8 @@ brew install opensc --cask
 pkcs11-tool --login --test
 ```
 
-Then following the following docs to get this working with Firefox: https://github.com/OpenSC/Wiki/blob/master/Installing-OpenSC-PKCS11-Module-in-Firefox%2C-Step-by-Step.md
+Then following the following docs to get this working with Firefox:
+https://github.com/OpenSC/Wiki/blob/master/Installing-OpenSC-PKCS11-Module-in-Firefox%2C-Step-by-Step.md
 
 ### Passwordless Mac Login
 With PKCS#11, you can also enable smartcard login for your Mac. Note, this isn't actually dependent on OpenSC installed above, but instead uses the mac built-in `sc_auth` command.
@@ -106,7 +107,12 @@ sc_auth list
 If you keep getting prompted for your Mac password as well from the login screen, just open Keychain Access and unlock it from there. Next time you lock your Mac, you should only get prompted for your Yubikey PIV PIN.
 
 ## SSH
+I use my PGP keys stored on my Yubikeys to authenticate my SSH connections. We need to setup a few things in connection with this.
+
+Firstly, the BBC ssh tunneling config needs to be configured along with the proxy capability to allow access from On-Reith.
+
 ```
+# ~/.ssh/config:
 Host *,??-*-?
   User YOUR_COSMOS_USERNAME
   IdentityFile ~/.ssh/id_rsa
@@ -120,3 +126,27 @@ Host github.com
   IdentityFile ~/.ssh/id_rsa
   ProxyCommand nc -x socks-gw.reith.bbc.co.uk:1085 %h %p
 ```
+
+We then need to configure GnuPG to act as an agent to SSH:
+
+```
+# ~/.gnupg/gpg-agent.conf
+pinentry-program /usr/local/MacGPG2/libexec/pinentry-mac.app/Contents/MacOS/pinentry-mac
+enable-ssh-support
+default-cache-ttl 600
+max-cache-ttl 7200
+```
+
+```
+# Add the following to ~/.zprofile
+export GPG_TTY="$(tty)"
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+gpgconf --launch gpg-agent
+```
+
+You should then be able to SSH out to a Cosmos instance. If you need to export your ssh public key, run `ssh-add -L`.
+
+Source docs:
+- https://developers.yubico.com/PIV/Guides/Securing_SSH_with_OpenPGP_or_PIV.html
+- https://florin.myip.org/blog/easy-multifactor-authentication-ssh-using-yubikey-neo-tokens
+- https://gist.github.com/ixdy/6fdd1ecea5d17479a6b4dab4fe1c17eb
