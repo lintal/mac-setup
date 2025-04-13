@@ -143,7 +143,7 @@ Source docs:
 
 ## Git
 
-I use my PGP key on my Yubikey to sign all my git commits, and I want this configured by default. To do this:
+I use my PGP key on my Yubikey(s) to sign all my git commits, and I want this configured by default. To do this:
 
 Some basic setup to start:
 
@@ -151,17 +151,29 @@ Some basic setup to start:
 # To install:
 brew install git
 
+# Setup basic user details:
 git config --global user.email "{YOUR_EMAIL_ADDRESS}"
 git config --global user.name "{YOUR_NAME}"
 
 # Setup some alias commands:
 git config --global alias.tree "log --graph --decorate --pretty=oneline --abbrev-commit"
+
+# Configure auto-signing commits:
+git config --global commit.gpgsign true
+git config --global tag.gpgSign true
 ```
 
 We may also want to add Github's SSH key for verifying commits made through the web console. You can get the certificate from here: https://github.com/web-flow.gpg, then add this to your GPG-Keychain.
 
+Given I have multiple Yubikeys, I also want the ability to easily switch between them where required. To do this, I have configured a few bash alias commands:
+
+```
+# Add to ~/.zprofile:
+alias git-sign-bbc="git config --global user.signingkey {SUBKEY1_HASH}!"
+alias git-sign-personal="git config --global user.signingkey {SUBKEY2_HASH}!"
+```
+
+We can then activate one of the keys as follows (in this case, using my work issued Yubikey):
 ```bash
-git config --global commit.gpgsign true
-git config --global tag.gpgSign true
-git config --global user.signingkey {PGP_SIGN_KEY_LAST_4_OCTETS}
+git-sign-bbc
 ```
