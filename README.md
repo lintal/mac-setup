@@ -39,6 +39,11 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
 nvm install --lts
 ```
 
+There are some global packages I like having installed as well - so installing them now:
+```bash
+npm i -g tsx
+```
+
 ### OhMyZsh
 I use this for doing some config of my shell environment. See the [docs](https://github.com/ohmyzsh/ohmyzsh). To install:
 
@@ -194,6 +199,15 @@ git-sign-bbc
 ## AWS CLI
 
 Install the AWS CLI as per the published instructions [here](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html).
+
+Set a couple of basic config values:
+
+```
+# ~/.aws/config
+[default]
+region = eu-west-1
+output = json
+```
 
 ### GoBBC
 Tool used to authenticate AWS access to BBC accounts - see [here](https://github.com/bbc/gobbc).
