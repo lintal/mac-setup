@@ -176,6 +176,9 @@ git config --global alias.tree "log --graph --decorate --pretty=oneline --abbrev
 # Configure auto-signing commits:
 git config --global commit.gpgsign true
 git config --global tag.gpgSign true
+
+# Exclude special Mac files
+git config --global core.excludesfile "~/.gitignore" &&  echo .DS_Store >> ~/.gitignore
 ```
 
 We may also want to add Github's SSH key for verifying commits made through the web console. You can get the certificate from here: https://github.com/web-flow.gpg, then add this to your GPG-Keychain.
