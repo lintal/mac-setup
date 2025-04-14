@@ -78,15 +78,12 @@ gpg/card> quit
 ```
 
 ## PKCS#11 Certificate
-I also have my DevCert installed on my Yubikey. To enable access to this from your browser, you need to do the following:
+I also have my DevCert installed on my Yubikey. To enable access to this from your browser, you need to do the following. Note: I have installed FireFox using the BBC Software Catalogue.
 
 Source Docs:
 https://github.com/OpenSC/OpenSC/wiki/macOS-Quick-Start
 
 ```bash
-# This works best with Firefox, so let's install that:
-brew install firefox
-
 # To install PKCS#11 capability:
 brew install opensc --cask
 
