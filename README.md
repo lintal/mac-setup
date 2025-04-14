@@ -265,3 +265,28 @@ To configure:
 alias gbc="gobbc aws-console -a"
 alias gbt="gobbc aws-credentials -a"
 ```
+
+## Time Machine Backups
+
+I use Time Machine to run regular backups of various parts of my system. I have an extensive list of excluded paths to reduce the amount of unnecessary data stored, taking the view that a replacement BBC Laptop will come pre-installed with a bunch of stuff already, and that I should be re-installing software through the Service-Catalogue rather than recovering from Time-Machine backup. Also you typically aren't given the option to recover from TimeMachine backup anyway on a BBC Mac.
+
+My list of excluded paths (not exhaustive): 
+```
+/Applications/Library
+/Users/Shared
+/Users/localadmin
+~/Applications
+~/BBC Dropbox
+~/Library/CloudStorage/OneDrive-BBC
+~/Movies
+~/Music
+~/Pictures
+```
+
+Given I have various software development projects, I also want to prevent dependencies being unnecessarily backed-up (you can always recover by running `npm i` or similar right).
+To do this, I followed the instructions for [this package](https://github.com/stevegrunwell/asimov).
+
+```bash
+brew install asimov
+sudo brew services start asimov
+```
