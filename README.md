@@ -275,6 +275,7 @@ My list of excluded paths (not exhaustive):
 ~/Applications
 ~/BBC Dropbox
 ~/Library/CloudStorage/OneDrive-BBC
+~/Library/Mobile Documents/com~apple~CloudDocs
 ~/Movies
 ~/Music
 ~/Pictures
