@@ -131,16 +131,13 @@ Match host *.cloud.bbc.co.uk,!172.*,!10.*,!*.bbc.co.uk exec "scutil --proxy | gr
   ProxyCommand nc -X 5 -x socks-gw.reith.bbc.co.uk:1085 %h %p
 
 Host *,??-*-?
-  User YOUR_COSMOS_USERNAME
-  IdentityFile ~/.ssh/id_rsa
+  User {YOUR_COSMOS_USERNAME}
   ProxyCommand >&1; h="%h"; r=${h##*,}; i=${h%%,*}; v=$(($(cut -d. -f2 <<<$i) / 32)); exec ssh -q -p 22000 bastion-tunnel@$v.access.$r.cloud.bbc.co.uk nc $i %p
   StrictHostKeyChecking no
   UserKnownHostsFile /dev/null
  
 Host github.com
- HostName github.com
-  User YOUR_GITHUB_USERNAME
-  IdentityFile ~/.ssh/id_rsa
+  User {YOUR_GITHUB_USERNAME}
 ```
 
 We then need to configure GnuPG to act as an agent to SSH:
