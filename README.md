@@ -118,6 +118,18 @@ Firstly, the BBC ssh tunneling config needs to be configured along with the prox
 
 ```
 # ~/.ssh/config:
+# Detect ZScaler is on, and disable ProxyCommand for off-reith hosts
+# ZScaler adds CGNAT style 100.64.x.y routes, so look for them
+# This preempts the on-Reith Match below - 1st match wins
+Match host *.cloud.bbc.co.uk,!172.*,!10.*,!*.bbc.co.uk exec "netstat -rn -f inet | grep -q '100\.64\.0\.1.*UGHS.*utun'"
+  ProxyCommand none
+
+# Detect we're on Reith, and head out through the socks proxy for off-reith hosts
+# Look for ProxyAutoConfigEnable in scutil
+# This Match is preempted by the Match above if ZScaler is detected
+Match host *.cloud.bbc.co.uk,!172.*,!10.*,!*.bbc.co.uk exec "scutil --proxy | grep -qF 'ProxyAutoConfigEnable : 1'"
+  ProxyCommand nc -X 5 -x socks-gw.reith.bbc.co.uk:1085 %h %p
+
 Host *,??-*-?
   User YOUR_COSMOS_USERNAME
   IdentityFile ~/.ssh/id_rsa
@@ -129,7 +141,6 @@ Host github.com
  HostName github.com
   User YOUR_GITHUB_USERNAME
   IdentityFile ~/.ssh/id_rsa
-  ProxyCommand nc -x socks-gw.reith.bbc.co.uk:1085 %h %p
 ```
 
 We then need to configure GnuPG to act as an agent to SSH:
