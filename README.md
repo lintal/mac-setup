@@ -194,7 +194,7 @@ We may also want to add Github's SSH key for verifying commits made through the 
 Given I have multiple Yubikeys, I also want the ability to easily switch between them where required. To do this, I have configured a few bash alias commands:
 
 ```
-# Add to ~/.zprofile:
+# Add to ~/.zshrc:
 alias git-sign-bbc="git config --global user.signingkey {SUBKEY1_HASH}!"
 alias git-sign-personal="git config --global user.signingkey {SUBKEY2_HASH}!"
 ```
@@ -269,7 +269,7 @@ I like having a few shortcut commands to ease working with GoBBC. These are:
 
 To configure:
 ```
-# Add to ~/.zprofile
+# Add to ~/.zshrc
 alias gbc="gobbc aws-console -a"
 alias gbt="gobbc aws-credentials -a"
 ```
